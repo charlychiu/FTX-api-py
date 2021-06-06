@@ -3,10 +3,8 @@ import aiohttp
 import time
 import json
 import datetime
-import ftxapi
 
 from ..utils.custom_logger import CustomLogger
-from ..utils.decimal import Decimal
 
 class FtxRest:
     def __init__(self, API_KEY=None, API_SECRET=None, subaccount=None, host='https://ftx.com/api', loop=None,
@@ -16,7 +14,7 @@ class FtxRest:
         self.API_SECRET = API_SECRET
         self.subaccount = subaccount
         self.host = host
-        self.parse_float = Decimal
+        self.parse_float = parse_float
         self.logger = CustomLogger('FtxRest', logLevel=logLevel)
     
     def generate_auth_headers(self, path, method='POST', body=None):
@@ -25,7 +23,7 @@ class FtxRest:
         """
         import hmac
         ts = int(time.time() * 1000)
-        signature_payload = f'{ts}{method}/api/{path}'.encode()
+        signature_payload = f'{ts}{method}/api/{path}'.encode() # TODO optimize, get path directly
         if body != None:
             signature_payload += body.encode()
         signature = hmac.new(self.API_SECRET.encode(), signature_payload, 'sha256').hexdigest()
