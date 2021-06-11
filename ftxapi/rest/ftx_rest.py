@@ -103,3 +103,21 @@ class FtxRest:
         async with aiohttp.ClientSession() as session:
             async with session.post(url + params, headers=headers, json=data) as resp:
                 return await self._process_response(resp)
+
+    async def delete(self, endpoint, data=None, params=None):
+        """
+        Send a pre-signed DELETE request to the ftx api
+
+        @return response
+        """
+        if params is None:
+            params = {}
+        if data is None:
+            data = {}
+        params = urllib.parse.urlencode(params, safe='/')
+        url = '{}/{}?{}'.format(self.host, endpoint, params)
+        sData = json.dumps(data)
+        headers = self._generate_auth_headers(endpoint, params, 'DELETE', sData)
+        async with aiohttp.ClientSession() as session:
+            async with session.delete(url + params, headers=headers, json=data) as resp:
+                return await self._process_response(resp)
