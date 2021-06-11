@@ -65,7 +65,7 @@ class FtxRest:
         """
         if params is None:
             params = {}
-        params = urllib.parse.urlencode(params)
+        params = urllib.parse.urlencode(params, safe='/')
         url = '{}/{}?{}'.format(self.host, endpoint, params)
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
@@ -79,7 +79,7 @@ class FtxRest:
         """
         if params is None:
             params = {}
-        params = urllib.parse.urlencode(params)
+        params = urllib.parse.urlencode(params, safe='/')
         url = '{}/{}?{}'.format(self.host, endpoint, params)
         headers = self._generate_auth_headers(endpoint, params, 'GET')
         async with aiohttp.ClientSession() as session:
@@ -96,7 +96,7 @@ class FtxRest:
             params = {}
         if data is None:
             data = {}
-        params = urllib.parse.urlencode(params)
+        params = urllib.parse.urlencode(params, safe='/')
         url = '{}/{}?{}'.format(self.host, endpoint, params)
         sData = json.dumps(data)
         headers = self._generate_auth_headers(endpoint, params, 'POST', sData)
