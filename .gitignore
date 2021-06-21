@@ -5,3 +5,6 @@ __pycache__
 .DS_Store
 _*.py
 .idea
+dist
+ftx_api_py.egg-info
+build
